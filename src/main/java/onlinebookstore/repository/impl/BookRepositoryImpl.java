@@ -1,6 +1,8 @@
 package onlinebookstore.repository.impl;
 
 import java.util.List;
+import java.util.Optional;
+import onlinebookstore.exception.EntityNotFoundException;
 import onlinebookstore.model.Book;
 import onlinebookstore.repository.BookRepository;
 import org.hibernate.Session;
@@ -48,6 +50,15 @@ public class BookRepositoryImpl implements BookRepository {
             return query.getResultList();
         } catch (Exception e) {
             throw new RuntimeException("Can't get all books form DB", e);
+        }
+    }
+
+    @Override
+    public Optional<Book> findById(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            return Optional.ofNullable(session.get(Book.class, id));
+        } catch (Exception e) {
+            throw new EntityNotFoundException("Can't get book by id: " + id);
         }
     }
 }

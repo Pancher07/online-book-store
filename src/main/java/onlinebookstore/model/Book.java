@@ -7,12 +7,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 @Entity
-@Data
+@Getter
+@Setter
 @SQLDelete(sql = "UPDATE books SET deleted = true WHERE id=?")
 @SQLRestriction("deleted=false")
 @Table(name = "books")

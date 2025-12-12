@@ -1,11 +1,10 @@
 package onlinebookstore.mapper;
 
 import onlinebookstore.config.MapperConfig;
-import onlinebookstore.dto.BookDto;
-import onlinebookstore.dto.BookRequestDto;
+import onlinebookstore.dto.book.BookDto;
+import onlinebookstore.dto.book.BookRequestDto;
 import onlinebookstore.model.Book;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 @Mapper(config = MapperConfig.class)
@@ -14,7 +13,5 @@ public interface BookMapper {
 
     Book toModel(BookRequestDto requestDto);
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "deleted", ignore = true)
     void updateBookFromDto(BookRequestDto dto, @MappingTarget Book book);
 }

@@ -2,9 +2,9 @@ package onlinebookstore.service.impl;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import onlinebookstore.dto.BookDto;
-import onlinebookstore.dto.BookRequestDto;
-import onlinebookstore.exception.EntityNotFoundException;
+import onlinebookstore.dto.book.BookDto;
+import onlinebookstore.dto.book.BookRequestDto;
+import onlinebookstore.exception.BookNotFoundException;
 import onlinebookstore.mapper.BookMapper;
 import onlinebookstore.model.Book;
 import onlinebookstore.repository.BookRepository;
@@ -18,8 +18,8 @@ public class BookServiceImpl implements BookService {
     private final BookMapper bookMapper;
 
     @Override
-    public BookDto save(BookRequestDto bookRequestDto) {
-        Book book = bookRepository.save(bookMapper.toModel(bookRequestDto));
+    public BookDto save(BookRequestDto dto) {
+        Book book = bookRepository.save(bookMapper.toModel(dto));
         return bookMapper.toDto(book);
     }
 
@@ -38,9 +38,9 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto update(Long id, BookRequestDto dto) {
-        Book existingBook = findBookByIdOrElseThrow(id);
-        bookMapper.updateBookFromDto(dto, existingBook);
-        return bookMapper.toDto(bookRepository.save(existingBook));
+        Book book = findBookByIdOrElseThrow(id);
+        bookMapper.updateBookFromDto(dto, book);
+        return bookMapper.toDto(bookRepository.save(book));
     }
 
     @Override
@@ -51,6 +51,6 @@ public class BookServiceImpl implements BookService {
 
     private Book findBookByIdOrElseThrow(Long id) {
         return bookRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Book not found with id: " + id));
+                .orElseThrow(() -> new BookNotFoundException("Book not found with id: " + id));
     }
 }
